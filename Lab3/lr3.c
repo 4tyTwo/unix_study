@@ -19,8 +19,6 @@ int is_hidden_dir(char *dir) {
 
 int has_sub_dirs(char *path) {
   DIR *dp;
-  char exclude[] = ".";
-  char exclude2[] = "..";
   struct dirent *d;
   struct stat st;
   char rel_path[258]; // 255 as max length + ./ + /
