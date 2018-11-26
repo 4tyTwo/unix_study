@@ -46,31 +46,9 @@ char* delete_substrings(const char* string) {
   return delete_substrings_inner(string, 0);
 }
 
-void capitalize(char* string) {
-  for (int i = 0; i < strlen(string); ++i)
-    if (islower(string[i]) != 0)
-      string[i] = string[i] - 32;
-}
-
-int main() {
-    int tube[2];
-    pipe(tube);
-    if (fork() == 0) {
-      // this is the child process
-      close(tube[0]); // reading end of the pipe
-      dup2(tube[1], 1); // stdout ---> pipe writing end
-      char test[] = "tteerywwq";
-      printf("%s\n", delete_substrings(test));
-    }
-    else {
-      if (fork() == 0) {
-        close(tube[1]); // writing end of the pipe
-        dup2(tube[0], 0);  // stdin ----> pipe reading end
-        char c[100];
-        fgets(c, sizeof(c), stdin);
-        capitalize(c);
-        printf("RETURNED: %s\n", c);
-      }
-    }
-  return 0;
+void main() {
+    char string[100];
+    fgets(string, sizeof(string), stdin);
+    printf("%s", delete_substrings(string));
+    return;
 }
