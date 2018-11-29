@@ -46,9 +46,10 @@ char* delete_substrings(const char* string) {
   return delete_substrings_inner(string, 0);
 }
 
-void main() {
+int main() {
     char string[100];
     fgets(string, sizeof(string), stdin);
-    printf("%s", delete_substrings(string));
-    return;
+    char *newstring = delete_substrings(string);
+    fwrite(newstring, sizeof(char), sizeof(newstring) + 1, stdout);
+    return 0;
 }

@@ -4,12 +4,20 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h>
 
 #define R 0
 #define W 1
 #define TRUE 1
 #define FALSE 0
-#define PERIOD '.'
+
+void case_swap(char *string) {
+    for (int i = 0; i < strlen(string); ++i)
+        if (islower(string[i]))
+            string[i] = string[i] - 32;
+        else if (isupper(string[i]))
+            string[i] = string[i] + 32;
+}
 
 int main(int argc, char **argv) {
     int pid, c, NEWLINE = TRUE, total;
@@ -38,14 +46,15 @@ int main(int argc, char **argv) {
             close(p[R]);
             close(q[W]);
             fp = fdopen(p[W],"w");
-            fwrite(argv[1], sizeof(char), sizeof(argv[1]) + 1, fp);
+            fwrite(argv[1], sizeof(char), sizeof(argv[1]) + 2, fp);
             fclose(fp);
             close(R);
             dup(q[R]);
             close(q[R]);
-            char c[100];
+            char c[101];
             fgets(c, sizeof(c), stdin);
-            printf("Substring returned: %s", c);
+            case_swap(c);
+            printf("Substring returned and case swapped: %s\n", c);
         }
     }
     return 0;
