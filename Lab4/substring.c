@@ -1,8 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <stdio.h>
-#include <errno.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -31,25 +29,21 @@ char* delete_substring(const char* string, int start) {
   return newstring;
 }
 
-char* delete_substrings_inner(const char* string, int start_pos) {
+char* delete_substrings(const char* string, int start) {
   char* tmp;
   tmp = malloc(sizeof(char) * (strlen(string) + 1));
   strcpy(tmp, string);
-  for (int i = start_pos; i < strlen(tmp) - 1; ++i) {
+  for (int i = start; i < strlen(tmp) - 1; ++i) {
     if (tmp[i] == tmp[i + 1])
-      return delete_substrings_inner(delete_substring(tmp, i), i);
+      return delete_substrings(delete_substring(tmp, i), i);
   }
   return tmp;
 }
 
-char* delete_substrings(const char* string) {
-  return delete_substrings_inner(string, 0);
-}
-
 int main() {
-    char string[100];
-    fgets(string, sizeof(string), stdin);
-    char *newstring = delete_substrings(string);
-    fwrite(newstring, sizeof(char), sizeof(newstring) + 1, stdout);
-    return 0;
+  char string[100];
+  fgets(string, sizeof(string), stdin);
+  char *newstring = delete_substrings(string, 0);
+  fwrite(newstring, sizeof(char), sizeof(newstring) + 1, stdout);
+  return 0;
 }
