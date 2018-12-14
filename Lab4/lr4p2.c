@@ -13,16 +13,16 @@ int main() {
   pipe(q);
   switch (fork()) {
     case 0:
-      // child
+      // child, executes second
       // P stream
       close(p[W]);
       close(R);
-      dup(p[R]);
+      dup(p[R]); // p[R] now points to R (stdin)
       close(p[R]);
       // Q stream
       close(q[R]);
       close(W);
-      dup(q[W]);
+      dup(q[W]); // q[W] now points to W (stdout)
       close(q[W]);
       //
       execl("./substring.out", "substring", 0);
@@ -31,6 +31,7 @@ int main() {
       printf("Error while calling fork\n");
       exit(1);
     default:
+      // executes first
       close(p[R]);
       close(q[W]);
       fp = fdopen(p[W], "w");
@@ -39,7 +40,7 @@ int main() {
       fwrite(st, sizeof(char), sizeof(st) + 2, fp);
       fclose(fp);
       close(R);
-      dup(q[R]);
+      dup(q[R]); // q[R] now points to R (stdin)
       close(q[R]);
       execl("./case_swap.out", "case_swap", 0);
       exit(0);

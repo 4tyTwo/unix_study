@@ -18,15 +18,17 @@ int main() {
           printf("Error while calling fork #2\n");
           exit(2);
         case 0:
+          // executes second
           close(0); // close stdin
-          dup(fd[0]);
+          dup(fd[0]); //fd[0] now points to stdin
           close(fd[0]);
           close(fd[1]); // must be closed so execl won't be paused
           execl("./substring.out", "substring", 0);
           exit(0);
         default:
+          // executes first 
           close(1); // close stdout
-          dup(fd[1]);
+          dup(fd[1]);// fd[1] now points to stdout
           close(fd[1]);
           close(fd[0]); // must be closed so execl won't be paused
           execl("./case_swap.out", "case_swap", 0);
