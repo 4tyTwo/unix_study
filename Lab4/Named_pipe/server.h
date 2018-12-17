@@ -5,4 +5,3 @@ struct message {
 
 #define PUBLIC "public"
 #define LINESIZE 512
-
